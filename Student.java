@@ -10,10 +10,10 @@ public class Student{
     _apslots = apslots;
     _name = name;
     _grades = grades;
-    _gpa = calculateGpa();
+    _gpa = calcGPA();
   }
   
-  private double calculateGpa(){
+  private double calcGPA(){
     int total = 0;
     int numClasses = 0;
     for (int i = 0; i < _grades.length; i++){
@@ -29,7 +29,18 @@ public class Student{
   public double getGpa(){
     return _gpa;
   }
-  
+  public int getOSIS(){
+    return _osis;
+  }
+  public int getAPslots(){
+    return _apslots;
+  }
+  public String getName(){
+    return _name;
+  }
+  public int[][] getGrades(){
+    return _grades;
+  }
   
   
 }
