@@ -1,0 +1,19 @@
+Programming program:
+===================
+HTML front end form
+
+Java backend
+Server: Lisa bart homer marge
+Algorithm for ranking spots in the queue for classes
+Student data type (#1)
+Private vars: osis, name, grade (2D array), gpa (calcGPA fxn), ap slots
+Subclasses: Freshman, Sophomore, Junior, Senior
+Function that calculates average
+Roster (student list) (#2)
+Schedule Class (#4)
+Private var: 
+Course class (#3)
+Core class, elective class (if we have time), AP class
+Space availability in schedule
+Function that checks if a student qualifies for a class
+
