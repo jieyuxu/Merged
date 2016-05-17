@@ -5,7 +5,7 @@ public class Student{
   private String _name;
   private int[][] _grades;
   
-  public Student(){
+  public Student(int osis, int apslots, double gpa, String name, int[][] grades){
     
     
   }
