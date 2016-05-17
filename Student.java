@@ -5,6 +5,7 @@ public class Student{
   private double _gpa;
   private String _name;
   private int[][] _grades;
+  private Course[] _schedule;
   
   public Student(int osis, int apslots, String name, int[][] grades){
     _osis = osis;
@@ -12,6 +13,7 @@ public class Student{
     _name = name;
     _grades = grades;
     _gpa = calcGPA();
+    _schedule = new Course[];
   }
   
   private double calcGPA(){
@@ -42,6 +44,10 @@ public class Student{
   public int[][] getGrades(){
     return _grades;
   }
+  public Course[] getSchedule(){
+    return _schedule;
+  }
+  
   
   
 }
