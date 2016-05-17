@@ -4,4 +4,10 @@ public class Student{
   private double _gpa;
   private String _name;
   private int[][] _grades;
+  
+  public Student(){
+    
+    
+  }
+  }
 }
