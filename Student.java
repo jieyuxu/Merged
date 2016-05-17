@@ -10,19 +10,24 @@ public class Student{
     _apslots = apslots;
     _name = name;
     _grades = grades;
-    _gpa = getGpa();
+    _gpa = calculateGpa();
   }
   
-  private double getGpa(){
+  private double calculateGpa(){
     int total = 0;
     int numClasses = 0;
-    for (int i = 0; i < grades.length; i++){
-      for (int j = 0; j < grades[i].length; j++){
-        total += grades[i][j];
+    for (int i = 0; i < _grades.length; i++){
+      for (int j = 0; j < _grades[i].length; j++){
+        total += _grades[i][j];
         numClasses++;
       }
     }
     return total * 1.0 / numClasses;
+  }
+  
+  // accessor methods
+  public double getGpa(){
+    return _gpa;
   }
   
   
