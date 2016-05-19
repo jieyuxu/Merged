@@ -10,7 +10,7 @@ public class Tile {
 
   public Tile(int val, Tile neighbor){
     _val = val;
-    _colorCode = _codes[val-1]
+    _colorCode = _codes[val-1];
     _neighbor = neighbor;
   }
   
@@ -27,8 +27,8 @@ public class Tile {
   }
       
   public static void main(String [] args){
-	  Tile x = new Tile(3, "\u001B[34m", null);
-	  Tile y = new Tile(4, "\u001B[31m", x);
+	  Tile x = new Tile(3, null);
+	  Tile y = new Tile(4, x);
   	System.out.println(x);
 	  System.out.println(y);
     }
