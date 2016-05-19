@@ -20,7 +20,14 @@ public class Tile {
   }
   
   public String toString(){
-    return _colorCode + " " + getVal() + ANSI_RESET;
+    return _colorCode + getVal() + ANSI_RESET;
   }
+      
+  public static void main(String [] args){
+	  Tile x = new Tile(3, "\u001B[34m", null);
+	  Tile y = new Tile(4, "\u001B[31m", x);
+  	System.out.println(x);
+	  System.out.println(y);
+    }
   
 }
