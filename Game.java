@@ -1,7 +1,7 @@
 public Class Game {
     
-    Board _board;
-    int _score;
+    private Board _board;
+    private int _score;
     
     public Game(){
         _board = new Board();    
