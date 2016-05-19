@@ -1,6 +1,6 @@
 public class Tile {
 
-  private int _val;
+  private Integer _val;
   private String _colorCode;
   private Tile _neighbor;
   private int _orientation; //can only be 0 (up), 1 (left), 2 (down), 3 (right)
@@ -8,13 +8,13 @@ public class Tile {
   public static final String RESET =  "\u001B[0m";
   
 
-  public Tile(int val, Tile neighbor){
+  public Tile(Integer val, Tile neighbor){
     _val = val;
     _colorCode = _codes[val-1];
     _neighbor = neighbor;
   }
   
-  public int getVal(){
+  public Integer getVal(){
     return _val;
   }
   
