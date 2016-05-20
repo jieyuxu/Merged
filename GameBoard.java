@@ -30,19 +30,23 @@ public class GameBoard{
     return ans;
   }
   
-  public boolean fit2(){
-  	int found = 0;
-  	for (int i = 0; i < _board.length() - 1; i++){
-  		for (int j = 0; j < _board.length() - 1; j++){
-  			if (_board[i][j] != null)
-  				pass;
-  			else 
-  				if (_board[i][j+1] == null || _board[i+1][j] == null) return true;
-  		}
+    public static boolean fit2(String[][] _board){
+        int maxIndex = _board.length - 1;
+  	for (int i = 0; i < maxIndex; i++){
+	    for (int j = 0; j < maxIndex; j++){
+		if (_board[i][j] == null)
+		    //check against right neighbor and downstairs neighbor
+		    if (_board[i][j+1] == null || _board[i+1][j] == null) return true;
+	    }
   	}
+	for (int i = 0; i < maxIndex; i++){
+	    //check in last row against right neighbor
+	    if (_board[maxIndex][i] == null && _board[maxIndex][i+1] == null) return true;
+	    //check in last column against downstairs neighbor
+	    if (_board[i][maxIndex] == null && _board[i+1][maxIndex] == null) return true;
+	}
   	return false;
-  	
-  }
+    }
 
  //  public boolean checkLeft(){
  //  	if (_board[i][j-1].equals(null))
