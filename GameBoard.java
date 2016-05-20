@@ -29,6 +29,20 @@ public class GameBoard{
     }
     return ans;
   }
+  
+  public boolean fit2(){
+  	int found = 0;
+  	for (int i = 0; i < _board.length() - 1; i++){
+  		for (int j = 0; j < _board.length() - 1; j++){
+  			if (_board[i][j] != null)
+  				pass;
+  			else 
+  				if (_board[i][j+1] == null || _board[i+1][j] == null) return true;
+  		}
+  	}
+  	return false;
+  	
+  }
 
  //  public boolean checkLeft(){
  //  	if (_board[i][j-1].equals(null))
