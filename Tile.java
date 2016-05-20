@@ -21,6 +21,7 @@ public class Tile {
 	_val = val;
 	_colorCode = _codes[val-1];
 	_neighbor = neighbor;
+	_orientation = 0;
     }
   
     public Integer getVal(){
