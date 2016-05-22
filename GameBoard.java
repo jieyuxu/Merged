@@ -48,56 +48,6 @@ public class GameBoard{
   	return false;
     }
 
- //  public boolean checkLeft(){
- //  	if (_board[i][j-1].equals(null))
-	// 	return true;
-	// return false;
- //  }
-
- //  public boolean checkRight(){
- //  	if (_board[i][j+1].equals(null))
-	// 	return true;
- //  }
-
- //  public boolean checkUp(){
- //  	if(_board[i-1][j].equals(null))
-	// 	return true;
- //  }
-
- //  public boolean checkDown(){
- //  	if (_board[i+1][j].equals(null))
-	// 	return true;
- //  }
-/*
-	public boolean fitTwo(){
-		if (_spots < 2) return false;
-		for (int i = 0; i < _board.length; i++){
-			for (int j = 0; j < _board.length; i++){
-				if (_board[i][j].equals(null)){
-					if (i == 0){
-						if (_board[i+1][j].equals(null)) // down
-							return true;
-						if (j == 0)
-							if (_board[i][j+1].equals(null))
-								return true; //left
-						else if (j == _board.length - 1) //right
-							if (_board[i][j-1].equals(null))
-								return true;
-						else //not the corners
-							if (_board[i][j-1].equals(null) || _board[i][j+1].equals(null))
-								return true;
-					}
-					if (i == _board.length - 1){
-						if (_board[i-1][j].equals(null))
-							return true; //up
-
-					}
-				}
-  	 		}
-		}
-		return false;
-	}
-*/
   public static void main(String[] args){
     GameBoard test = new GameBoard();
     Tile a = new Tile(2, null);
