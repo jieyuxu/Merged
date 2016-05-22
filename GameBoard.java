@@ -1,5 +1,5 @@
 public class GameBoard{
-  private int _spots;
+  private int _openSpots;
   private Tile[][] _board;
 
   
@@ -8,29 +8,17 @@ public class GameBoard{
     _spots = _board.length * _board.length;
   }
   
-  public int getSpots(){
-    return _spots;
+  public int numOpenSpots(){
+    return _openSpots;
   }
   
   public void add(int x, int y, Tile addin){
   	//if (_board[x][y] != null) return;
   	_board[x][y] = addin;
   }
-  public String toString(){
-    String ans = "";
-    System.out.println("    0 1 2 3 4");
-    System.out.println("===============");
-    for (int i = 0; i < _board.length; i++){
-      ans += i + " | ";
-      for (int j = 0; j < _board[i].length; j++){
-        ans += _board[i][j] + " ";
-        if (j == 4) ans += "\n";
-      }
-    }
-    return ans;
-  }
-  
-    public static boolean fit2(String[][] _board){
+
+    public static boolean canFit2(String[][] _board){
+	if (numOpenSpots() < 2) return false;
         int maxIndex = _board.length - 1;
   	for (int i = 0; i < maxIndex; i++){
 	    for (int j = 0; j < maxIndex; j++){
@@ -47,6 +35,20 @@ public class GameBoard{
 	}
   	return false;
     }
+
+  public String toString(){
+    String ans = "";
+    System.out.println("    0 1 2 3 4");
+    System.out.println("===============");
+    for (int i = 0; i < _board.length; i++){
+      ans += i + " | ";
+      for (int j = 0; j < _board[i].length; j++){
+        ans += _board[i][j] + " ";
+        if (j == 4) ans += "\n";
+      }
+    }
+    return ans;
+  }
 
   public static void main(String[] args){
     GameBoard test = new GameBoard();
