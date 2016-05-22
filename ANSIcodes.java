@@ -7,4 +7,4 @@ public static final String ANSI_BLUE = "\u001B[34m";  //4
 public static final String ANSI_PURPLE = "\u001B[35m"; //1
 public static final String ANSI_CYAN = "\u001B[36m";    //2
 public static final String ANSI_WHITE = "\u001B[37m";
-public static final String ANSI_BLACKBACKGROUND = "\u001B[40m";  //7
+public static final String ANSI_BLACKBACKGROUND = "\u001B[37;40m";  //7
