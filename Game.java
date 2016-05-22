@@ -10,19 +10,21 @@ public class Game {
         _score = 0;
     }
 
-    public Tile genOneTile(ArrayList<Integer> options){
-        int choice = (int) (Math.random() * options.size());
-	int tileVal = options.get(choice);
-        return new Tile(tileVal, null);
+    public Tile genOneTile(ArrayList<Integer> valOptions, Tile neighbor){
+        int choice = (int) (Math.random() * valOptions.size());
+	System.out.println(choice + " first");			   
+	int tileVal = valOptions.get(choice);
+	System.out.println(tileVal);
+        return new Tile(tileVal, neighbor);
     }
 
-    public Tile getTwoTiles(ArrayList<Integer> options){
-	Tile t1 = genOneTile(options);
+    public Tile getTwoTiles(ArrayList<Integer> valOptions){
+	Tile t1 = genOneTile(valOptions, null);
 	// t1.getVal returns Integer Object
 	// uses remove(Object o)
-	options.remove(t1.getVal());
-	Tile t2 = genOneTile(options);
-	return t2;
+	valOptions.remove(t1.getVal());
+	Tile t2 = genOneTile(valOptions, t1);
+	return t1;
     }
     
     /*   public Tile getNextTile(){
@@ -41,9 +43,9 @@ public class Game {
         Game game = new Game();
 	//  game.play();
 	ArrayList<Integer> a = new ArrayList<Integer>();
-	for (int i = 1; i < 10; i++)
+	for (int i = 1; i < 8; i++)
 	    a.add(i);
-	game.getTwoTiles(a);
+	Tile y = game.getTwoTiles(a);
+	System.out.println(a);
+	System.out.println(y.getNeighbor());
     }
-
-}
