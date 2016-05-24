@@ -3,7 +3,7 @@ public class Tile {
     private Integer _val;
     private String _colorCode;
     private Tile _neighbor;
-    private int _orientation; //can only be 0 (up), 1 (left), 2 (down), 3 (right)
+    private int[] _orientation; //a 2 elem array indicating delta x delta y of neighbor
 
     public static final String ANSI_RESET = "\u001B[0m";  //default text
     public static final String ANSI_PURPLE = "\u001B[37;45m";  //1    
@@ -20,13 +20,32 @@ public class Tile {
 	_val = val;
 	_colorCode = _codes[val-1];
 	_neighbor = neighbor;
-	_orientation = 0;
+	_orientation = new int[2];
+	_orientation[0] = 1;
+	_orientation[1] = 0;
+    }
+
+    public void setOrientation(int x, int y){
+	_orientation[0] = x;
+	_orientation[1] = y;
+    }
+
+    public void setNeighbor(Tile t){
+	_neighbor = t;
     }
   
     public Integer getVal(){
 	return _val;
     }
   
+    public int getOrientationX(){
+	return _orientation[0];
+    }
+
+    public int getOrientationY(){
+	return _orientation[1];
+    }
+
     public Tile getNeighbor(){
 	return _neighbor;
     }
@@ -44,6 +63,10 @@ public class Tile {
 	    Tile b = new Tile(i, null);
 	    System.out.println(b);
 	}
+	System.out.println(1 % -2);
+	System.out.println(0 % -2);
+	System.out.println(-1 % -2);
+	System.out.println(-2 % -2);
     }
   
 }
