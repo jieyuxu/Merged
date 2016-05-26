@@ -49,14 +49,10 @@ public class Game {
         System.out.println(_board);
     }
 
-    public static void main(String [] args){
-        Game game = new Game();
-	//  game.play();
-	ArrayList<Integer> a = new ArrayList<Integer>();
-	for (int i = 1; i < 8; i++)
-	    a.add(i);
-	Tile y = game.getTwoTiles(a);
-	System.out.println(a);
-	System.out.println(y.getNeighbor());
+     public static void main(String [] args){
+	Game a = new Game();
+	Tile b = a.getNextPiece();
+	System.out.println(b);
+	System.out.println(b.getNeighbor());
     }
 }
