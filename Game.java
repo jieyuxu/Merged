@@ -6,7 +6,7 @@ public class Game {
     private int _score;
     
     public Game(){
-	//   _board = new GameBoard();    
+	_board = new GameBoard();    
         _score = 0;
     }
 
