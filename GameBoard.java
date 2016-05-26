@@ -5,7 +5,7 @@ public class GameBoard{
   
   public GameBoard(){
     _board = new Tile[5][5]; //always a square matrix
-    _spots = _board.length * _board.length;
+    _openSpots = _board.length * _board.length;
   }
   
   public int numOpenSpots(){
@@ -17,7 +17,8 @@ public class GameBoard{
   	_board[x][y] = addin;
   }
 
-    public static boolean canFit2(String[][] _board){
+    //public static boolean canFit2(String[][] _board){
+    public boolean canFit2(){
 	if (numOpenSpots() < 2) return false;
         int maxIndex = _board.length - 1;
   	for (int i = 0; i < maxIndex; i++){
@@ -61,7 +62,7 @@ public class GameBoard{
     test._board[0][0] = null;
     test._board[0][1] = null;
     System.out.println(test);
-    System.out.println(test.fitTwo());
+    System.out.println(test.canFit2());
   }
 
 
