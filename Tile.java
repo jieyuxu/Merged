@@ -5,6 +5,15 @@ public class Tile {
     private Tile _neighbor;
     private int[] _orientation; //a 2 elem array indicating delta x delta y of neighbor
 
+
+    /*
+      Tile Orientations
+      right = [0,1]
+      left = [0,-1]
+      up = [-1,0]
+      down = [1,0]
+    */
+
     public static final String ANSI_RESET = "\u001B[0m";  //default text
     public static final String ANSI_PURPLE = "\u001B[37;45m";  //1    
     public static final String ANSI_CYAN = "\u001B[37;46m";  //2
@@ -25,9 +34,9 @@ public class Tile {
 	_orientation[1] = 0;
     }
 
-    public void setOrientation(int x, int y){
-	_orientation[0] = x;
-	_orientation[1] = y;
+    public void setOrientation(int r, int c){
+	_orientation[0] = r;
+	_orientation[1] = c;
     }
 
     public void setNeighbor(Tile t){
@@ -38,11 +47,11 @@ public class Tile {
 	return _val;
     }
   
-    public int getOrientationX(){
+    public int getOrientationR(){
 	return _orientation[0];
     }
 
-    public int getOrientationY(){
+    public int getOrientationC(){
 	return _orientation[1];
     }
 
