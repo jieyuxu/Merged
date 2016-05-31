@@ -13,6 +13,11 @@ public class GameBoard{
   public int numOpenSpots(){
     return _openSpots;
   }
+
+    //-------------
+    public Tile[][] getBoard(){
+	return _board;
+    }
   
   public void add(int x, int y, Tile addin){
   	//if (_board[x][y] != null) return;
@@ -75,7 +80,7 @@ public class GameBoard{
   public static void main(String[] args){
     GameBoard test = new GameBoard();
     Tile a = new Tile(2, null);
-    a.setOrientation(1,0);
+    a.setOrientation(0,-1);
     int len = test._board.length;
     //test.add(0,0,a);
     for (int i = 0; i < len; i++)
@@ -84,11 +89,11 @@ public class GameBoard{
     
     //test for canFit2()
     test._board[2][0] = null;
-    test._board[3][0] = null;
+    test._board[2][1] = null;
     // test._board[0][1] = null;
     // test._board[2][0] = null;
     System.out.println(test);
-    System.out.println(canFitHere(2,0, a, test._board));
+    System.out.println(canFitHere(2,1, a, test._board));
    // System.out.println(test.canFit2());
   }
 
