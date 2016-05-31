@@ -22,10 +22,9 @@ public class Game {
 	// uses remove(Object o)
 	valOptions.remove(t1.getVal());
 	Tile t2 = genOneTile(valOptions, t1);
-	t1.setOrientation(t2.getOrientationR(), t2.getOrientationC() + 1);
 	//what we'll be returning is a tile set up like this:
 	//H indicates head, T indicates tail, or the neighbor
-	//[H, T]
+	//[H, T] both will be set to the right 
 	return t2;
     }
     
