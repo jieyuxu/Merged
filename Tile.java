@@ -30,8 +30,8 @@ public class Tile {
 	_colorCode = _codes[val-1];
 	_neighbor = neighbor;
 	_orientation = new int[2];
-	_orientation[0] = 1;
-	_orientation[1] = 0;
+	_orientation[0] = 0;
+	_orientation[1] = 1;
     }
 
     public void setOrientation(int r, int c){
