@@ -38,21 +38,72 @@ public class Game {
 	return piece;
     }
 
+    /*
     public void rotatePiece(Tile t){
 	if (t.getNeighbor() == null) return;
 	t.setOrientation( (t.getOrientationX() - 1) % 2, (t.getOrientationY() - 1) % 2);
 	Tile n = t.getNeighbor();
 	n.setOrientation( (n.getOrientationY() - 1) % 2, (n.getOrientationY() - 1) % 2);
     }
+    */
+    
+    //-------------
+    public Tile[][] getGameBoard(){
+	return _board.getBoard();
+    }
 
+    public GameBoard getBoardOnly(){
+	return _board;
+    }
+    
+    public boolean placeOne(Tile t, int r, int c){
+	if (! (getGameBoard()[r][c] == null)) return false;
+	getGameBoard()[r][c] = t;
+	return true;
+    }
+
+    public boolean placeTwo(Tile t, int r, int c){
+	GameBoard bd = getBoardOnly();
+	Tile[][] b = getGameBoard();
+	if (! bd.canFit2()) return false;
+	int[] orientation = new int[2];
+	orientation[0] = t.getOrientationR();
+	orientation[1] = t.getOrientationC();
+	if (!(b[r][c] == null &&
+	      b[r + orientation[0]][c + orientation[1]] == null)) return false;
+	b[r][c] = t;
+	b[r + orientation[0]][c + orientation[1]] = t.getNeighbor();
+	t.setNeighbor(null);
+	return true;
+    }
+
+    
     public void play(){
         System.out.println(_board);
     }
 
      public static void main(String [] args){
+	 /*
 	Game a = new Game();
 	Tile b = a.getNextPiece();
 	System.out.println(b);
 	System.out.println(b.getNeighbor());
+	 */	 
+	 Game test = new Game();
+	 int len = test.getGameBoard().length;
+	 for (int i = 0; i < len; i++)
+	     for (int j = 0; j < len; j++)
+		 test.getBoardOnly().add(i,j,new Tile(i+1, null));
+	 test.getGameBoard()[2][0] = null;
+	 test.getGameBoard()[2][1] = null;
+	 Tile a = new Tile(2, null);
+	 Tile b = new Tile(3, null);	 
+	 a.setNeighbor(b);
+	 a.setOrientation(0,1); //right
+	 Tile c = new Tile(4, null);
+	 System.out.println(test.getBoardOnly());
+	 System.out.println("placing tile:");
+	 System.out.println(test.placeOne(c, 2, 0));
+	 System.out.println(test.getBoardOnly());	 
     }
 }
