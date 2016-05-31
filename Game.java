@@ -10,10 +10,10 @@ public class Game {
         _score = 0;
     }
 
-    public Tile genOneTile(ArrayList<Integer> valOptions, Tile neighbor){
+    public Tile genOneTile(ArrayList<Integer> valOptions){  //no neighbor
         int choice = (int) (Math.random() * valOptions.size());
 	int tileVal = valOptions.get(choice);
-        return new Tile(tileVal, neighbor);
+        Tile ans = new Tile(tileVal, null);
     }
 
     public Tile genTwoTiles(ArrayList<Integer> valOptions){
