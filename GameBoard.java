@@ -14,17 +14,9 @@ public class GameBoard{
     return _openSpots;
   }
 
-    //-------------
     public Tile[][] getBoard(){
 	return _board;
     }
-  
-  public void add(int x, int y, Tile addin){
-  	//if (_board[x][y] != null) return;
-  	_board[x][y] = addin;
-    if (addin.getVal() > _maxVal)
-      _maxVal = addin.getVal();
-  }
 
     public boolean canFit2(){
     	if (numOpenSpots() < 2) return false;
@@ -50,7 +42,6 @@ public class GameBoard{
 
 
   public static boolean canFitHere(int r, int c, Tile addin, Tile[][] board){
-       //if (! canFit2()) return false;
        if (board[r][c] != null) return false;
        int newR, newC;
        newR = r + addin.getOrientationR();
@@ -63,6 +54,39 @@ public class GameBoard{
        return board[newR][newC] == null;
   }
 
+    public boolean placeOne(Tile t, int r, int c){
+	Tile[][] b = getBoard();
+	if (! (b[r][c] == null)) return false;
+        b[r][c] = t;
+	if (t.getVal() > _maxVal) _maxVal = t.getVal();
+	return true;
+    }
+
+    public boolean placeTwo(Tile t, int r, int c){
+	Tile[][] b = getBoard();
+	int[] orientation = new int[2];
+	orientation[0] = t.getOrientationR();
+	orientation[1] = t.getOrientationC();
+	//System.out.println(orientation[0] + orientation[1]);
+	if ((r + orientation[0] >= _board.length) ||
+	    (c + orientation[1] >= _board.length)) return false;
+	if (!(b[r][c] == null &&
+	      b[r + orientation[0]][c + orientation[1]] == null)) return false;
+	b[r][c] = t;
+	b[r + orientation[0]][c + orientation[1]] = t.getNeighbor();
+	t.setNeighbor(null);
+	if (t.getVal() > _maxVal) _maxVal = t.getVal();	
+	return true;
+    }
+
+    
+
+
+
+
+
+
+    
   public String toString(){
     String ans = "";
     System.out.println("    0 1 2 3 4");
@@ -70,7 +94,8 @@ public class GameBoard{
     for (int i = 0; i < _board.length; i++){
       ans += i + " | ";
       for (int j = 0; j < _board[i].length; j++){
-        ans += _board[i][j] + " ";
+	  if (_board[i][j] == null) ans += "X ";
+	  else ans += _board[i][j] + " ";
         if (j == 4) ans += "\n";
       }
     }
@@ -79,21 +104,25 @@ public class GameBoard{
 
   public static void main(String[] args){
     GameBoard test = new GameBoard();
-    Tile a = new Tile(2, null);
-    a.setOrientation(0,-1);
-    int len = test._board.length;
-    //test.add(0,0,a);
+    int len = test.getBoard().length;
+    Tile[][] testBoard = test.getBoard();
     for (int i = 0; i < len; i++)
     	for (int j = 0; j < len; j++)
-    		test.add(i,j,new Tile(i+1, null));
-    
-    //test for canFit2()
-    test._board[2][0] = null;
-    test._board[2][1] = null;
-    // test._board[0][1] = null;
-    // test._board[2][0] = null;
+	    testBoard[i][j] = new Tile(i+1, null);
+    //test.add(i,j,new Tile(i+1, null));
     System.out.println(test);
-    System.out.println(canFitHere(2,1, a, test._board));
+
+
+    Tile a = new Tile(2, null);
+    a.setOrientation(0,1);
+    a.setNeighbor(new Tile(3, null));
+    test.getBoard()[2][0] = null;
+    test.getBoard()[2][1] = null;
+    System.out.println(test.placeTwo(a, 2, 0));
+    System.out.println(test);
+    
+
+    //System.out.println(canFitHere(2,1, a, test._board));
    // System.out.println(test.canFit2());
   }
 
