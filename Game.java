@@ -40,9 +40,13 @@ public class Game {
 	Tile t2 = genOneTile(); //
 	t1.setNeighbor(t2);
 	_valOptions.add(t1.getVal());
+	/*
+        ============This bit of code gives the tile a random orientation
+	but I'm not sure if that's what we want right now.===============
 	int[][] orientations = {{0,1},{0,-1},{-1,0},{1,0}};
 	int[] orArray = orientations[(int)(Math.random()*4)];
 	t1.setOrientation(orArray[0], orArray[1]);
+	*/	
 	return t1;
     }
     
