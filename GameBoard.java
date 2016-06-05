@@ -68,8 +68,9 @@ public class GameBoard{
 	orientation[0] = t.getOrientationR();
 	orientation[1] = t.getOrientationC();
 	//System.out.println(orientation[0] + orientation[1]);
-	if ((r + orientation[0] >= _board.length) ||
-	    (c + orientation[1] >= _board.length)) return false;
+	if ((r + orientation[0] >= _board.length || r + orientation[0] < 0) ||
+	    (c + orientation[1] >= _board.length || c + orientation[1] < 0))
+	    return false;
 	if (!(b[r][c] == null &&
 	      b[r + orientation[0]][c + orientation[1]] == null)) return false;
 	b[r][c] = t;
