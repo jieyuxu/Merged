@@ -1,4 +1,6 @@
 import java.util.ArrayList;
+import java.util.Scanner;
+
 
 public class Game {
     
@@ -63,6 +65,13 @@ public class Game {
     }
        
     public void play(){
+	Scanner sc = new Scanner(System.in);
+	System.out.println("Welcome to Merged!");
+	
+	while (sc.hasNext()){
+	    String userInput = sc.next();
+	    System.out.println(userInput);
+	}
         System.out.println(_board);
     }
 
@@ -89,6 +98,7 @@ public class Game {
      public static void main(String [] args){
 	 
 	 Game test = new Game();
+	 test.play();
 	 GameBoard testB = test.getGameBoard();	 
 	 Tile t1 = test.genOneTile();
 	 testB.placeOne(t1, 0, 0);
