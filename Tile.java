@@ -23,6 +23,8 @@ public class Tile {
     public static final String ANSI_GREEN = "\u001B[37;42m";  //6
     public static final String ANSI_BLACK = "\u001B[37;40m";  //7
     private String[] _codes = {ANSI_PURPLE, ANSI_CYAN, ANSI_RED, ANSI_BLUE, ANSI_GREEN, ANSI_YELLOW, ANSI_BLACK};
+    
+    private static final int[][] ROT_MATRIX_270 = { {0, 1}, {-1, 0} };
   
 
     public Tile(Integer val, Tile neighbor){
