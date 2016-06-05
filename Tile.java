@@ -62,6 +62,16 @@ public class Tile {
     public String toString(){
 	return _colorCode + getVal() + ANSI_RESET;
     }
+
+    public void rotate(){
+        int newOrientationR = getOrientationR() * ROT_MATRIX_270[0][0] + 
+	    getOrientationC() * ROT_MATRIX_270[1][0] ;
+	int newOrientationC =  getOrientationR() * ROT_MATRIX_270[0][1] +
+	    getOrientationC() * ROT_MATRIX_270[1][1];
+	setOrientation(newOrientationR, newOrientationC);
+    }
+
+
       
     public static void main(String [] args){
 	//	Tile x = new Tile(3, null);
