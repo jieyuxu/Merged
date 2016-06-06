@@ -42,12 +42,15 @@ public class GameBoard{
 
 
     public boolean canFitHere(Tile t, int r, int c){
-	if (_board[r][c] != null) return false;
 	int newR, newC;
-	newR = r + t.getOrientationR();
-	// System.out.println(newR);
-	newC = c + t.getOrientationC();
-	// System.out.println(newC);
+	if (t.getNeighbor() == null){
+	    newR = r;
+	    newC = c;
+	}
+	else {
+	    newR = r + t.getOrientationR();
+	    newC = c + t.getOrientationC();
+	}
 	if (newR >= _board.length || newC >= _board.length ||
 	    newR < 0 || newC < 0)
 	    return false;
@@ -56,7 +59,7 @@ public class GameBoard{
 
     public boolean placeOne(Tile t, int r, int c){
 	Tile[][] b = getBoard();
-	if (! (b[r][c] == null)) return false;
+	if (! canFitHere(t, r, c)) return false;
         b[r][c] = t;
 	if (t.getVal() > _maxVal) _maxVal = t.getVal();
 	return true;
@@ -83,10 +86,6 @@ public class GameBoard{
 	else
 	    return placeTwo(t, r, c);
     }
-
-
-
-
 
     
     public String toString(){
