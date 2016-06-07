@@ -36,6 +36,11 @@ public class Tile {
 	_orientation[1] = 1;
     }
 
+    public void setVal(int val){
+	_val = val;
+	_colorCode = _codes[val-1];
+    }
+
     public void setOrientation(int r, int c){
 	_orientation[0] = r;
 	_orientation[1] = c;
@@ -59,6 +64,10 @@ public class Tile {
 
     public Tile getNeighbor(){
 	return _neighbor;
+    }
+
+    public boolean isSingleTile(){
+	return _neighbor == null;
     }
   
     public String toString(){
