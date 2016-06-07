@@ -1,4 +1,6 @@
 import java.util.ArrayList;
+import java.util.Queue;
+import java.util.LinkedList;
 import java.util.Scanner;
 
 
@@ -6,11 +8,13 @@ public class Game {
     
     private GameBoard _board;
     private int _score;
+    private int _maxTileVal;
     private ArrayList<Integer> _valOptions;
     
     public Game(){
 	_board = new GameBoard();    
         _score = 0;
+	_maxTileVal = 2;
 	_valOptions = new ArrayList<Integer>();
 	_valOptions.add(1);
 	_valOptions.add(2);
@@ -69,7 +73,7 @@ public class Game {
     }
         
     public void printPiece(Tile t){
-	if (t.getNeighbor() == null)  
+	if (t.isSingleTile())
 	    System.out.println(t + "");
 	else {
 	    String ans = "";
@@ -89,7 +93,64 @@ public class Game {
 	}
     }
     
+    //recursive
+    public void findAdjacent(int val, int row, int col, ArrayList<CoordinatePair> b, boolean[][] seen){
+	if (row < 0 || row >= _board.boardLength() || col < 0 || col >= _board.boardLength()) return;
+	if ( seen[row][col] || _board.getTileAt(row, col) == null) return;
+	if (_board.getTileAt(row, col).getVal() == val){
+	    seen[row][col] = true;
+	    b.add(new CoordinatePair(row, col));
+	    findAdjacent(val, row + 1, col, b, seen);
+	    findAdjacent(val, row, col + 1, b, seen);
+	    findAdjacent(val, row - 1, col, b, seen);
+	    findAdjacent(val, row, col - 1, b, seen);
+	}
+	return;
+    }
 
+    //wrapper
+    public void findAdjacent(int val, int row, int col, ArrayList<CoordinatePair> b){
+	boolean[][] seen = new boolean[5][5];
+	findAdjacent(val, row, col, b, seen);
+    }
+
+    public boolean tryToMergeAt(int r, int c){
+	Tile t = _board.getTileAt(r, c);
+	if (_board.getTileAt(r, c) == null) return false;
+	int value = t.getVal();
+	ArrayList<CoordinatePair> adjacentTiles = new ArrayList<CoordinatePair>();
+	findAdjacent(value, r, c, adjacentTiles);
+	if (adjacentTiles.size() < 3) return false;
+	adjacentTiles.remove(0);
+	for (CoordinatePair cp : adjacentTiles){
+	    _board.clearTileAt(cp.getRow(), cp.getCol());
+	}
+	int newVal = value + 1;
+	_board.getTileAt(r, c).setVal(newVal);
+	if (newVal > _maxTileVal) {
+	    _maxTileVal = newVal;
+	    _valOptions.add(newVal);
+	}
+	return true;
+    }
+
+
+    //round robin scheduling
+    public void mergeAllPossible(int r, int c){
+	Queue<CoordinatePair> lookAt = new LinkedList<CoordinatePair>();
+	lookAt.add(new CoordinatePair(r, c));
+	Tile t = _board.getTileAt(r, c);
+	if (! t.isSingleTile())
+	    lookAt.add(new CoordinatePair(r + t.getOrientationR(), c + t.getOrientationC())); 
+	while (! lookAt.isEmpty()) {
+	    //	    printBoard();
+	    CoordinatePair location = lookAt.remove();
+	    if (tryToMergeAt(location.getRow(), location.getCol())) {
+		printBoard();
+		lookAt.add(location);
+	    }
+	}
+    }
 
     public void play(){
 	Scanner sc = new Scanner(System.in);
@@ -103,9 +164,10 @@ public class Game {
 	printPiece(nextPiece);
 	System.out.println();
 	System.out.println("Enter coordinates to place tile");
+	if (! nextPiece.isSingleTile()) System.out.println("or type 'r' to rotate the piece");
 	while (sc.hasNextLine()){
 	    String userInput = sc.nextLine();
-	    if (userInput.equals("rotate")) nextPiece.rotate();
+	    if (userInput.equals("r")) nextPiece.rotate();
 	    else if (userInput.length() != 3 || ! userInput.substring(1, 2).equals(" "))
 		System.out.println("\nPlease enter a valid row and column coordinate pair separated by a space");
 	    else {
@@ -115,22 +177,25 @@ public class Game {
 		    int r = Integer.parseInt(rowCoor);
 		    int c = Integer.parseInt(colCoor);
 		    boolean putIn = _board.placePiece(nextPiece, r, c);
-		    if (putIn)
+		    if (putIn) {
+			printBoard();
 			nextPiece = getNextPiece();
+			mergeAllPossible(r, c);
+		    }
 		    else
 			System.out.println("\nPiece cannot fit there. Try again");
 		}
 		catch(NumberFormatException e){
-		    System.out.println("\nPlease enter a valid row and column coordinate pair separated by a space");
+		    System.out.println("\nPlease enter a valid row and column coordinate pair separated by a space, or enter 'rotate' to rotate the piece");
 		}
 	    }
 	    System.out.println();
 	    printBoard();
 	    printPiece(nextPiece);
+	    System.out.println("Enter coordinates to place tile");
+	    if (! nextPiece.isSingleTile()) System.out.println("or type 'rotate' to turn the piece");
 	    
-	    //System.out.println(userInput);
 	}
-	//     System.out.println(_board);
     }    
 
     public static void main(String [] args){
