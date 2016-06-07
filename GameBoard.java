@@ -1,13 +1,11 @@
 public class GameBoard{
     private int _openSpots;
     private Tile[][] _board;
-    private int _maxVal;
 
   
     public GameBoard(){
 	_board = new Tile[5][5]; //always a square matrix
 	_openSpots = _board.length * _board.length;
-	_maxVal = 0;
     }
   
     public int numOpenSpots(){
@@ -18,9 +16,27 @@ public class GameBoard{
 	return _board;
     }
 
+    public int boardLength(){
+	return _board.length;
+    }
+
+
+
+
+    //pre-condition: r and c are valid row/col coords
+    public Tile getTileAt(int r, int c){
+	return _board[r][c];
+    }
+
+    public void clearTileAt(int r, int c){
+	_board[r][c] = null;
+    }
+
     public boolean canFit2(){
-    	if (numOpenSpots() < 2) return false;
-	int maxIndex = _board.length - 1;
+	int open = numOpenSpots();
+	if (open > 13) return true;
+    	if (open < 2) return false;
+	int maxIndex = boardLength() - 1;
       	for (int i = 0; i < maxIndex; i++){
     	    for (int j = 0; j < maxIndex; j++){
 		if (_board[i][j] == null)
@@ -43,7 +59,7 @@ public class GameBoard{
 
     public boolean canFitHere(Tile t, int r, int c){
 	int newR, newC;
-	if (t.getNeighbor() == null){
+	if (t.isSingleTile()){
 	    newR = r;
 	    newC = c;
 	}
@@ -51,7 +67,7 @@ public class GameBoard{
 	    newR = r + t.getOrientationR();
 	    newC = c + t.getOrientationC();
 	}
-	if (newR >= _board.length || newC >= _board.length ||
+	if (newR >= boardLength() || newC >= boardLength() ||
 	    newR < 0 || newC < 0)
 	    return false;
 	return _board[newR][newC] == null;
@@ -61,7 +77,6 @@ public class GameBoard{
 	Tile[][] b = getBoard();
 	if (! canFitHere(t, r, c)) return false;
         b[r][c] = t;
-	if (t.getVal() > _maxVal) _maxVal = t.getVal();
 	return true;
     }
 
@@ -74,14 +89,12 @@ public class GameBoard{
 	if (! canFitHere(t, r, c)) return false;
 	b[r][c] = t;
 	b[r + orientation[0]][c + orientation[1]] = t.getNeighbor();
-	t.setNeighbor(null);
-	if (t.getVal() > _maxVal) _maxVal = t.getVal();	
 	return true;
     }
 
     
     public boolean placePiece(Tile t, int r, int c){
-	if (t.getNeighbor() == null)
+	if (t.isSingleTile())
 	    return placeOne(t, r, c);
 	else
 	    return placeTwo(t, r, c);
@@ -101,30 +114,6 @@ public class GameBoard{
 	    }
 	}
 	return ans;
-    }
-
-    public static void main(String[] args){
-	GameBoard test = new GameBoard();
-	int len = test.getBoard().length;
-	Tile[][] testBoard = test.getBoard();
-	for (int i = 0; i < len; i++)
-	    for (int j = 0; j < len; j++)
-		testBoard[i][j] = new Tile(i+1, null);
-	//test.add(i,j,new Tile(i+1, null));
-	System.out.println(test);
-
-
-	Tile a = new Tile(2, null);
-	a.setOrientation(0,1);
-	a.setNeighbor(new Tile(3, null));
-	test.getBoard()[2][0] = null;
-	test.getBoard()[2][1] = null;
-	System.out.println(test.placeTwo(a, 2, 0));
-	System.out.println(test);
-    
-
-	//System.out.println(canFitHere(2,1, a, test._board));
-	// System.out.println(test.canFit2());
     }
 
 
