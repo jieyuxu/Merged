@@ -1,0 +1,15 @@
+Help
+
+To play, place tiles on the board in empty slots. 
+
+To place a tile, type the row number and column number of the slot in which you wish to place the tile, separated by a space. 
+When placing a two-tile piece, the coordinates entered should be those of the slot where the tile with an asterisk next to it will go.
+
+To rotate a tile, type ‘r’. Tiles are always rotated counterclockwise. 
+
+When the board contains three or more tiles with the same value, those tiles will merge into a single tile of the next highest value. 
+For example, three ones merge to create a two, and so on.
+
+The more tiles you successfully place on the board, the higher your score. The game ends when the board fills up.
+
+To quit, press ctrl-C.
