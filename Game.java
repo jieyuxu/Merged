@@ -167,7 +167,10 @@ public class Game {
 	if (! nextPiece.isSingleTile()) System.out.println("or type 'r' to rotate the piece");
 	while (sc.hasNextLine()){
 	    String userInput = sc.nextLine();
-	    if (userInput.equals("r")) nextPiece.rotate();
+	    if (userInput.equals("r")) {
+	    	nextPiece.rotate();
+	    	printBoard();	
+	    }
 	    else if (userInput.length() != 3 || ! userInput.substring(1, 2).equals(" "))
 		System.out.println("\nPlease enter a valid row and column coordinate pair separated by a space");
 	    else {
