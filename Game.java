@@ -177,23 +177,24 @@ public class Game {
 		    int r = Integer.parseInt(rowCoor);
 		    int c = Integer.parseInt(colCoor);
 		    boolean putIn = _board.placePiece(nextPiece, r, c);
+		    printBoard();
 		    if (putIn) {
-			printBoard();
 			nextPiece = getNextPiece();
 			mergeAllPossible(r, c);
 		    }
-		    else
+		    else {
 			System.out.println("\nPiece cannot fit there. Try again");
+			System.out.println();
+			}
 		}
 		catch(NumberFormatException e){
-		    System.out.println("\nPlease enter a valid row and column coordinate pair separated by a space, or enter 'rotate' to rotate the piece");
+		    System.out.println("\nPlease enter a valid row and column coordinate pair separated by a space, or enter 'r' to rotate the piece");
 		}
 	    }
 	    System.out.println();
-	    printBoard();
 	    printPiece(nextPiece);
 	    System.out.println("Enter coordinates to place tile");
-	    if (! nextPiece.isSingleTile()) System.out.println("or type 'rotate' to turn the piece");
+	    if (! nextPiece.isSingleTile()) System.out.println("or type 'r' to turn the piece");
 	    
 	}
     }    
