@@ -12,6 +12,10 @@ public class GameBoard{
 	return _openSpots;
     }
 
+    public void setNumOpenSpots(int val){
+	_openSpots = val;
+    }
+
     public Tile[][] getBoard(){
 	return _board;
     }
@@ -19,8 +23,6 @@ public class GameBoard{
     public int boardLength(){
 	return _board.length;
     }
-
-
 
 
     //pre-condition: r and c are valid row/col coords
@@ -58,26 +60,23 @@ public class GameBoard{
 
 
     public boolean canFitHere(Tile t, int r, int c){
-	int newR, newC;
-	if (t.isSingleTile()){
-	    newR = r;
-	    newC = c;
-	}
-	else {
-	    newR = r + t.getOrientationR();
-	    newC = c + t.getOrientationC();
-	}
-	if (newR >= boardLength() || newC >= boardLength() ||
-	    newR < 0 || newC < 0)
+	if (r >= boardLength() || c >= boardLength() || r < 0 || c < 0)
 	    return false;
-	return _board[newR][newC] == null;
+	boolean firstFits = _board[r][c] == null;
+	if (t.isSingleTile()) return firstFits;
+	return firstFits && canFitHere(t.getNeighbor(), r + t.getOrientationR(), c + t.getOrientationC());
     }
 
     public boolean placeOne(Tile t, int r, int c){
 	Tile[][] b = getBoard();
 	if (! canFitHere(t, r, c)) return false;
         b[r][c] = t;
+	_openSpots--;
 	return true;
+    }
+
+    public boolean isFilled(){
+	return _openSpots == 0;
     }
 
     public boolean placeTwo(Tile t, int r, int c){
@@ -89,6 +88,7 @@ public class GameBoard{
 	if (! canFitHere(t, r, c)) return false;
 	b[r][c] = t;
 	b[r + orientation[0]][c + orientation[1]] = t.getNeighbor();
+	setNumOpenSpots(numOpenSpots() - 2);
 	return true;
     }
 

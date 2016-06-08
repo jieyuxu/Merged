@@ -29,6 +29,10 @@ public class Game {
 	System.out.println(getGameBoard());
     }
 
+    public void printScore(){
+	System.out.println("Score: " + _score);
+    }
+
     public ArrayList<Integer> getValOptions(){
 	return _valOptions;
     }
@@ -124,10 +128,13 @@ public class Game {
 	adjacentTiles.remove(0);
 	for (CoordinatePair cp : adjacentTiles){
 	    _board.clearTileAt(cp.getRow(), cp.getCol());
+	    _board.setNumOpenSpots(_board.numOpenSpots() + 1);
 	}
 	int newVal = value + 1;
+	_score += newVal;
 	_board.getTileAt(r, c).setVal(newVal);
-	if (newVal > _maxTileVal) {
+	if (newVal == 7) explode(r, c);
+	else if (newVal > _maxTileVal) {
 	    _maxTileVal = newVal;
 	    _valOptions.add(newVal);
 	}
@@ -150,6 +157,12 @@ public class Game {
 		lookAt.add(location);
 	    }
 	}
+    }
+
+
+    //pre: tile at _board[r][c] is a 7;
+    public void explode(int r, int c){
+	
     }
 
     public void play(){
@@ -195,6 +208,12 @@ public class Game {
 		}
 	    }
 	    System.out.println();
+	    if (_board.isFilled()) {
+		System.out.println("Game over!");
+		printScore();
+		break;
+	    }
+
 	    printPiece(nextPiece);
 	    System.out.println("Enter coordinates to place tile");
 	    if (! nextPiece.isSingleTile()) System.out.println("or type 'r' to turn the piece");
