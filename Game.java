@@ -129,9 +129,9 @@ public class Game {
 	for (CoordinatePair cp : adjacentTiles){
 	    _board.clearTileAt(cp.getRow(), cp.getCol());
 	    _board.setNumOpenSpots(_board.numOpenSpots() + 1);
+	    _score += value; 
 	}
 	int newVal = value + 1;
-	_score += newVal;
 	_board.getTileAt(r, c).setVal(newVal);
 	if (newVal == 7) explode(r, c);
 	else if (newVal > _maxTileVal) {
