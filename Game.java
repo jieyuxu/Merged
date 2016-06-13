@@ -171,25 +171,25 @@ public class Game {
 	if (! (r + 1) > _board.boardLength()) down = true;
 	
 	if (left){
-		_board[r][c-1] == "X";
+		_board[r][c-1] == "null";
 		if (up){
-			_board[r-1][c-1] == "X";
-			_board[r-1][c] == "X";
+			_board[r-1][c-1] = "null";
+			_board[r-1][c] = "null";
 		}
 		if (down) {
-			_board[r+1][c-1] == "X";
-			_board[r+1][c] == "X";
+			_board[r+1][c-1] = "null";
+			_board[r+1][c] = "null";
 		}
 	}
 	if (right){
-		_board[r][c+1] == "X";
+		_board[r][c+1] == "null";
 		if (up) {
-			_board[r-1][c+1] == "X";
-			_board[r-1][c] == "X";
+			_board[r-1][c+1] = "null";
+			_board[r-1][c] = "null";
 		}
 		if (down) {
-			_board[r+1][c+1] == "X";
-			_board[r+1][c] == "X";
+			_board[r+1][c+1] = "null";
+			_board[r+1][c] = "null";
 		}
 	}
     }
