@@ -131,13 +131,18 @@ public class Game {
 		    _board.setNumOpenSpots(_board.numOpenSpots() + 1);
 		    _score += value; 
 		}
-		int newVal = value + 1;
-		_board.getTileAt(r, c).setVal(newVal);
-		//System.out.println("new val: " + newVal);
-		if (newVal == 7) explode(r, c);
-		else if (newVal > _maxTileVal) {
-		    _maxTileVal = newVal;
-		    _valOptions.add(newVal);
+		if (value == 7){
+			explode(r,c);
+			System.out.println("Explode! Boom Boom Pow!");
+		}
+		else {
+			int newVal = value + 1;
+			_board.getTileAt(r, c).setVal(newVal);
+			//System.out.println("new val: " + newVal);
+			if (newVal > _maxTileVal) {
+			    _maxTileVal = newVal;
+			    _valOptions.add(newVal);
+			}
 		}
 		return true;
     }
@@ -164,7 +169,6 @@ public class Game {
      //pre: tile at _board[r][c] is a 7;
     public void explode(int r, int c){
 		//explodes in a supposed 3 * 3 
-		System.out.println("Not doing anything");
 		boolean left, right, up, down;
 		left = right = up = down = false;
 		if (c + 1 < _board.boardLength()) right = true;
@@ -195,6 +199,7 @@ public class Game {
 				(_board.getBoard())[r+1][c] = null;
 			}
 		}
+		(_board.getBoard())[r][c] = null;
     }
 
     public void play(){
@@ -249,6 +254,7 @@ public class Game {
 	    }
 
 	    printPiece(nextPiece);
+	    //System.out.println(_maxTileVal);
 	    System.out.println("Enter coordinates to place tile");
 	    if (! nextPiece.isSingleTile()) System.out.println("or type 'r' to turn the piece");
 	    
