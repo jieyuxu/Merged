@@ -162,7 +162,27 @@ public class Game {
 
     //pre: tile at _board[r][c] is a 7;
     public void explode(int r, int c){
-	
+	//explodes in a supposed 3 * 3 
+	boolean left, right;
+	left = right = false;
+	if (! (r - 1) < 0){ //up
+		_board[r-1][c] == "X";
+		if (! (c - 1) < 0){ //left not out of bounds
+			_board[r-1][c-1] == "X"; //diagonal left
+			_board[r][c-1] == "X"; //left
+			left = true;
+		}
+		if (! (c + 1) >= _board.boardLength() ){ //right not out of bounds
+			_board[r - 1][c+1] == "X"; //diagonal right
+			_board[r][c+1] == "X"; //right
+			right = true;
+		}
+	}
+	if (! (r + 1) > _board.boardLength()){
+		_board[r+1][c] == "X";
+		if (left) _board[r+1][c-1] == "X";
+		if (right) _board[r+1][c+1] == "X";
+	} 
     }
 
     public void play(){
