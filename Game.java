@@ -57,7 +57,7 @@ public class Game {
 	if (t2.getVal() < t1.getVal()) {
 	    Tile temp = t1;
 	    t1 = t2;
-	    t2 = t1;
+	    t2 = temp;
 	}
 	t1.setNeighbor(t2);
 	_valOptions.add(t1.getVal());
