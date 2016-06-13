@@ -40,28 +40,28 @@ public class Game {
     //returns a new random single tile with a null neighbor
     public Tile genOneTile(){
         int choice = (int) (Math.random() * _valOptions.size());
-	int tileVal = _valOptions.get(choice);
+		int tileVal = _valOptions.get(choice);
         return new Tile(tileVal, null);
     }
 
     // returns a new random tile whose neighbor is not null and
     // does not have the same value
     public Tile genTwoTiles(){
-	Tile t1 = genOneTile();
-	// t1.getVal() returns Integer Object
-	// uses remove(Object o)
-	_valOptions.remove(t1.getVal());
-	Tile t2 = genOneTile();
-	//tile with lowest val is the main tile
-	//swap tile ref if necessary
-	if (t2.getVal() < t1.getVal()) {
-	    Tile temp = t1;
-	    t1 = t2;
-	    t2 = temp;
-	}
-	t1.setNeighbor(t2);
-	_valOptions.add(t1.getVal());
-	return t1;
+		Tile t1 = genOneTile();
+		// t1.getVal() returns Integer Object
+		// uses remove(Object o)
+		_valOptions.remove(t1.getVal());
+		Tile t2 = genOneTile();
+		_valOptions.add(t1.getVal());
+		//tile with lowest val is the main tile
+		//swap tile ref if necessary
+		if (t2.getVal() < t1.getVal()) {
+		    Tile temp = t1;
+		    t1 = t2;
+		    t2 = temp;
+		}
+		t1.setNeighbor(t2);
+		return t1;
     }
     
     public Tile getNextPiece(){
@@ -119,26 +119,27 @@ public class Game {
     }
 
     public boolean tryToMergeAt(int r, int c){
-	Tile t = _board.getTileAt(r, c);
-	if (_board.getTileAt(r, c) == null) return false;
-	int value = t.getVal();
-	ArrayList<CoordinatePair> adjacentTiles = new ArrayList<CoordinatePair>();
-	findAdjacent(value, r, c, adjacentTiles);
-	if (adjacentTiles.size() < 3) return false;
-	adjacentTiles.remove(0);
-	for (CoordinatePair cp : adjacentTiles){
-	    _board.clearTileAt(cp.getRow(), cp.getCol());
-	    _board.setNumOpenSpots(_board.numOpenSpots() + 1);
-	    _score += value; 
-	}
-	int newVal = value + 1;
-	_board.getTileAt(r, c).setVal(newVal);
-	if (newVal == 7) explode(r, c);
-	else if (newVal > _maxTileVal) {
-	    _maxTileVal = newVal;
-	    _valOptions.add(newVal);
-	}
-	return true;
+		Tile t = _board.getTileAt(r, c);
+		if (_board.getTileAt(r, c) == null) return false; //no tile
+		int value = t.getVal(); //gets value
+		ArrayList<CoordinatePair> adjacentTiles = new ArrayList<CoordinatePair>(); //creates arraylist
+		findAdjacent(value, r, c, adjacentTiles); 
+		if (adjacentTiles.size() < 3) return false;
+		adjacentTiles.remove(0);
+		for (CoordinatePair cp : adjacentTiles){
+		    _board.clearTileAt(cp.getRow(), cp.getCol());
+		    _board.setNumOpenSpots(_board.numOpenSpots() + 1);
+		    _score += value; 
+		}
+		int newVal = value + 1;
+		_board.getTileAt(r, c).setVal(newVal);
+		//System.out.println("new val: " + newVal);
+		if (newVal == 7) explode(r, c);
+		else if (newVal > _maxTileVal) {
+		    _maxTileVal = newVal;
+		    _valOptions.add(newVal);
+		}
+		return true;
     }
 
 
@@ -160,38 +161,40 @@ public class Game {
     }
 
 
-    //pre: tile at _board[r][c] is a 7;
+     //pre: tile at _board[r][c] is a 7;
     public void explode(int r, int c){
-	//explodes in a supposed 3 * 3 
-	boolean left, right, up, down;
-	left = right = up = down = false;
-	if (c + 1 < _board.boardLength()) right = true;
-	if (! (c - 1) < 0) left = true;
-	if (! (r - 1) < 0) up = true;
-	if (! (r + 1) > _board.boardLength()) down = true;
-	
-	if (left){
-		_board[r][c-1] == "null";
-		if (up){
-			_board[r-1][c-1] = "null";
-			_board[r-1][c] = "null";
+		//explodes in a supposed 3 * 3 
+		System.out.println("Not doing anything");
+		boolean left, right, up, down;
+		left = right = up = down = false;
+		if (c + 1 < _board.boardLength()) right = true;
+		if (! ((c - 1) < 0)) left = true;
+		if (! ((r - 1) < 0)) up = true;
+		if (! ((r + 1) > _board.boardLength())) down = true;
+		
+		if (left){
+			(_board.getBoard())[r][c-1] = null;
+			if (up){
+				(_board.getBoard())[r-1][c-1] = null;
+				(_board.getBoard())[r-1][c] = null;
+			}
+			if (down) {
+				(_board.getBoard())[r+1][c-1] = null;
+				(_board.getBoard())[r+1][c] = null;
+			}
 		}
-		if (down) {
-			_board[r+1][c-1] = "null";
-			_board[r+1][c] = "null";
+
+		if (right){
+			(_board.getBoard())[r][c+1] = null;
+			if (up) {
+				(_board.getBoard())[r-1][c+1] = null;
+				(_board.getBoard())[r-1][c] = null;
+			}
+			if (down) {
+				(_board.getBoard())[r+1][c+1] = null;
+				(_board.getBoard())[r+1][c] = null;
+			}
 		}
-	}
-	if (right){
-		_board[r][c+1] == "null";
-		if (up) {
-			_board[r-1][c+1] = "null";
-			_board[r-1][c] = "null";
-		}
-		if (down) {
-			_board[r+1][c+1] = "null";
-			_board[r+1][c] = "null";
-		}
-	}
     }
 
     public void play(){
@@ -223,6 +226,8 @@ public class Game {
 		    int c = Integer.parseInt(colCoor);
 		    boolean putIn = _board.placePiece(nextPiece, r, c);
 		    printBoard();
+		    //System.out.println("ARRAY OPTIONS:" + _valOptions);
+		    //System.out.println("MAXVAL: " + _maxTileVal);
 		    if (putIn) {
 			nextPiece = getNextPiece();
 			mergeAllPossible(r, c);
