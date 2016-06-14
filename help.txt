@@ -1,4 +1,3 @@
-Help
 
 To play, place tiles on the board in empty slots. 
 
@@ -12,4 +11,4 @@ For example, three ones merge to create a two, and so on.
 
 The more tiles you successfully place on the board, the higher your score. The game ends when the board fills up.
 
-To quit, press ctrl-C.
+To quit the game without saving your score, press ctrl-C.
