@@ -18,8 +18,6 @@ public class Game {
 		_maxTileVal = 2;
 		_valOptions = new ArrayList<Integer>();
 		_valOptions.add(1);
-		//_valOptions.add(2);
-		//_valOptions.add(6);
 		_valOptions.add(2);
     }
 
@@ -128,11 +126,11 @@ public class Game {
 		ArrayList<CoordinatePair> adjacentTiles = new ArrayList<CoordinatePair>(); //creates arraylist
 		findAdjacent(value, r, c, adjacentTiles); 
 		if (adjacentTiles.size() < 3) return false;
+		_score += adjacentTiles.size() * value;
 		adjacentTiles.remove(0);
 		for (CoordinatePair cp : adjacentTiles){
 		    _board.clearTileAt(cp.getRow(), cp.getCol());
 		    _board.setNumOpenSpots(_board.numOpenSpots() + 1);
-		    _score += value; 
 		}
 		if (value == 7){
 			explode(r,c);
@@ -230,10 +228,20 @@ public class Game {
 	System.out.println(HighScore.read());
     }
 
-    public void tryToSaveScoreOnScoreBoard(String initials) {
+    public void tryToSaveScoreOnScoreBoard() {
+	System.out.println("Please enter up to 3 initials to save score (input will be truncated)");
+	Scanner getInitials = new Scanner(System.in);
+	String initials = getInitials.nextLine().substring(0, 3);
+	getInitials.close();
 	if (ScoreTest.saveHighScore(_score, initials))
 	    System.out.println("High score added to list!");
 	else System.out.println("Score not in the top 10.");
+    }
+
+    public void endGame(){
+	tryToSaveScoreOnScoreBoard();
+	System.out.println();
+	printScoreBoard();
     }
 
     public void play(){
@@ -244,7 +252,7 @@ public class Game {
 	Tile nextPiece = getNextPiece();
 	printPiece(nextPiece);
 	System.out.println();
-	System.out.println("You may type 'help' at any time for assistance, or type 'savequitXYZ' to save your score with initials XYZ and exit");
+	System.out.println("You may type 'help' at any time for assistance, or type 'quit' to save your score and exit");
 	System.out.println();
 	System.out.println("Enter coordinates to place tile");
 	if (! nextPiece.isSingleTile()) System.out.println("or type 'r' to rotate the piece");
@@ -259,17 +267,9 @@ public class Game {
 		printBoard();	
 	    }
 	    else if (userInput.equals("quit")){
-		System.out.println("Please enter up to 3 initials to save score as");
-		Scanner getInitials = new Scanner(System.in);
-		String initials = getInitials.nextLine();
-		tryToSaveScoreOnScoreBoard(initials.substring(0, 3));
-		getInitials.close();
+		endGame();
 		break;
 	    }
-	    //	    else if (userInput.length() >= 8 &&
-	    //	     userInput.substring(0,8).equals("savequit")){
-	    //		tryToSaveScoreToScoreBoard(userInput.substring(8,11));
-	    // }
 				
 	    else if (userInput.length() != 3 || ! userInput.substring(1, 2).equals(" "))
 		System.out.println("\nPlease enter a valid row and column coordinate pair separated by a space");
@@ -300,10 +300,14 @@ public class Game {
 	    if (_board.isFilled()) {
 		System.out.println("Game over!");
 		printScore();
-		tryToSaveScoreOnScoreBoard(userInput.substring(8, 11));
+		endGame();
 		break;
 	    }
+
+	    printScore();
+	    System.out.println();
 	    printPiece(nextPiece);
+	    System.out.println();
 	    System.out.println("Enter coordinates to place tile");
 	    if (! nextPiece.isSingleTile()) System.out.println("or type 'r' to turn the piece");
 			    
