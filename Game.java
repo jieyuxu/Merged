@@ -18,9 +18,9 @@ public class Game {
 		_maxTileVal = 2;
 		_valOptions = new ArrayList<Integer>();
 		_valOptions.add(1);
-		//_valOptions.add(2);
+		_valOptions.add(2);
 		//_valOptions.add(6);
-		_valOptions.add(7);
+		//_valOptions.add(7);
     }
 
     
@@ -193,7 +193,6 @@ public class Game {
 				
 			}
 		}
-
 		if (right){
 			(_board.getBoard())[r][c+1] = null;
 			
@@ -282,6 +281,17 @@ public class Game {
 	    	nextPiece.rotate();
 	    	printBoard();	
 	    }
+	    else if (userInput.equals("highscores"))
+		System.out.println(HighScore.read());
+	    else if (userInput.length() >= 8 &&
+		     userInput.substring(0,8).equals("savequit")){
+	        if (ScoreTest.saveHighScore(_score, userInput.substring(8,11))
+		    == true)
+		    System.out.println("High score added to list!");
+		else System.out.println("Score not in the top 10.");
+	    }
+		    
+		
 	    else if (userInput.length() != 3 || ! userInput.substring(1, 2).equals(" "))
 		System.out.println("\nPlease enter a valid row and column coordinate pair separated by a space");
 	    else {
@@ -311,6 +321,10 @@ public class Game {
 	    if (_board.isFilled()) {
 		System.out.println("Game over!");
 		printScore();
+	        if (ScoreTest.saveHighScore(_score, userInput.substring(8,11))
+		    == true)
+		    System.out.println("High score added to list!");
+		else System.out.println("Score not in the top 10.");		
 		break;
 	    }
 
