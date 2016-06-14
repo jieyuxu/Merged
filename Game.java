@@ -18,9 +18,9 @@ public class Game {
 		_maxTileVal = 2;
 		_valOptions = new ArrayList<Integer>();
 		_valOptions.add(1);
-		_valOptions.add(2);
+		//_valOptions.add(2);
 		//_valOptions.add(6);
-		//_valOptions.add(7);
+		_valOptions.add(2);
     }
 
     
@@ -193,6 +193,7 @@ public class Game {
 				
 			}
 		}
+
 		if (right){
 			(_board.getBoard())[r][c+1] = null;
 			
@@ -246,97 +247,178 @@ public class Game {
     		return false;
     	return true;
     }
-
-    public void play(){
-	Scanner sc = new Scanner(System.in);
-	System.out.println("Welcome to Merged!");
-	System.out.println("For a brief introduction to this game, visit www.merged.it and watch the 30s trailer.");
-	System.out.println("For instructions on how to play this game, type help");
-	System.out.println();
-	System.out.println("Starting new game...");
-	System.out.println();
-	printBoard();
-	Tile nextPiece = getNextPiece();
-	printPiece(nextPiece);
-	System.out.println();
-	System.out.println("Enter coordinates to place tile");
-	if (! nextPiece.isSingleTile()) System.out.println("or type 'r' to rotate the piece");
-	while (sc.hasNextLine()){
-	    String userInput = sc.nextLine();
-	    if (userInput.equals("help")){
-            try {
-            	File file = new File("help.txt");
-	            Scanner instruc = new Scanner(file);
-	            while (instruc.hasNextLine()) {
-	                String line = instruc.nextLine();
-	                System.out.println(line);
-	            }
-	            instruc.close();
-	        }
-	        catch (Exception ex){
-	        	 ex.printStackTrace();
-	        }
-	    }
-	    if (userInput.equals("r")) {
-	    	nextPiece.rotate();
-	    	printBoard();	
-	    }
-	    else if (userInput.equals("highscores"))
-		System.out.println(HighScore.read());
-	    else if (userInput.length() >= 8 &&
-		     userInput.substring(0,8).equals("savequit")){
-	        if (ScoreTest.saveHighScore(_score, userInput.substring(8,11))
-		    == true)
-		    System.out.println("High score added to list!");
-		else System.out.println("Score not in the top 10.");
-	    }
-		    
-		
-	    else if (userInput.length() != 3 || ! userInput.substring(1, 2).equals(" "))
-		System.out.println("\nPlease enter a valid row and column coordinate pair separated by a space");
-	    else {
-		String rowCoor = userInput.substring(0, 1);
-		String colCoor = userInput.substring(2, 3);
-		try {
-		    int r = Integer.parseInt(rowCoor);
-		    int c = Integer.parseInt(colCoor);
-		    boolean putIn = _board.placePiece(nextPiece, r, c);
-		    printBoard();
-		    //System.out.println("ARRAY OPTIONS:" + _valOptions);
-		    //System.out.println("MAXVAL: " + _maxTileVal);
-		    if (putIn) {
-			nextPiece = getNextPiece();
-			mergeAllPossible(r, c);
-		    }
-		    else {
-			System.out.println("\nPiece cannot fit there. Try again");
+	public void play(){
+		Scanner sc = new Scanner(System.in);
+		System.out.println("Welcome to Merged!");
+		System.out.println("For a brief introduction to this game, visit www.merged.it and watch the 30s trailer.");
+		System.out.println("Do you want to start a new game? Type Y to start a new game.");
+		if (sc.nextLine().equals("Y")){
+			System.out.println("Starting new game...");
+			System.out.println("For instructions on how to play this game, type help");
 			System.out.println();
+			System.out.println("To quit the game and attempt to add your score to the high score list, type savequitXYZ where XYZ are the initials of your choice.");
+			System.out.println();
+			printBoard();
+			Tile nextPiece = getNextPiece();
+			printPiece(nextPiece);
+			System.out.println();
+			System.out.println("Enter coordinates to place tile");
+			if (! nextPiece.isSingleTile()) System.out.println("or type 'r' to rotate the piece");
+			while (sc.hasNextLine()){
+			    String userInput = sc.nextLine();
+			    if (userInput.equals("help")){
+		            try {
+		            	File file = new File("help.txt");
+			            Scanner instruc = new Scanner(file);
+			            while (instruc.hasNextLine()) {
+			                String line = instruc.nextLine();
+			                System.out.println(line);
+			            }
+			            instruc.close();
+			        }
+			        catch (Exception ex){
+			        	 ex.printStackTrace();
+			        }
+			    }
+			    if (userInput.equals("r")) {
+			    	nextPiece.rotate();
+			    	printBoard();	
+			    }
+			    else if (userInput.equals("highscores"))
+				System.out.println(HighScore.read());
+			    else if (userInput.length() >= 8 &&
+				     userInput.substring(0,8).equals("savequit")){
+			        if (ScoreTest.saveHighScore(_score, userInput.substring(8,11))
+				    == true)
+				    System.out.println("High score added to list!");
+				else System.out.println("Score not in the top 10.");
+			    }
+				    
+				
+			    else if (userInput.length() != 3 || ! userInput.substring(1, 2).equals(" "))
+				System.out.println("\nPlease enter a valid row and column coordinate pair separated by a space");
+			    else {
+				String rowCoor = userInput.substring(0, 1);
+				String colCoor = userInput.substring(2, 3);
+				try {
+				    int r = Integer.parseInt(rowCoor);
+				    int c = Integer.parseInt(colCoor);
+				    boolean putIn = _board.placePiece(nextPiece, r, c);
+				    printBoard();
+				    //System.out.println("ARRAY OPTIONS:" + _valOptions);
+				    //System.out.println("MAXVAL: " + _maxTileVal);
+				    if (putIn) {
+					nextPiece = getNextPiece();
+					mergeAllPossible(r, c);
+				    }
+				    else {
+					System.out.println("\nPiece cannot fit there. Try again");
+					System.out.println();
+					}
+				}
+				catch(NumberFormatException e){
+				    System.out.println("\nPlease enter a valid row and column coordinate pair separated by a space, or enter 'r' to rotate the piece");
+				}
+			    }
+			    System.out.println();
+			    if (_board.isFilled()) {
+				System.out.println("Game over!");
+				printScore();
+			        if (ScoreTest.saveHighScore(_score, userInput.substring(8,11))
+				    == true)
+				    System.out.println("High score added to list!");
+				else System.out.println("Score not in the top 10.");		
+				break;
+			    }
+
+			    printPiece(nextPiece);
+			    //System.out.println(_maxTileVal);
+			    //System.out.println("NUM OPEN SPOTS: " + _board.numOpenSpots());
+			    System.out.println("Enter coordinates to place tile");
+			    if (! nextPiece.isSingleTile()) System.out.println("or type 'r' to turn the piece");
+			    
 			}
 		}
-		catch(NumberFormatException e){
-		    System.out.println("\nPlease enter a valid row and column coordinate pair separated by a space, or enter 'r' to rotate the piece");
+	}   
+    /*
+    public void play(){
+		Scanner sc = new Scanner(System.in);
+		System.out.println("Welcome to Merged!");
+		System.out.println("For a brief introduction to this game, visit www.merged.it and watch the 30s trailer.");
+		//System.out.println("For instructions on how to play this game, type help");
+		System.out.println("Do you want to start a new game? Type Y to start a new game.");
+		if (sc.nextLine().equals("Y")){
+			System.out.println("Type help at any time for instructions.");
+			System.out.println("Starting new game...");
+			System.out.println();
+			printBoard();
+			Tile nextPiece = getNextPiece();
+			printPiece(nextPiece);
+			System.out.println();
+			System.out.println("Enter coordinates to place tile");
+			if (! nextPiece.isSingleTile()) System.out.println("or type 'r' to rotate the piece");
+			while (sc.hasNextLine()){
+			    String userInput = sc.nextLine();
+			    if (userInput.equals("help")){
+					try {
+						File file = new File("help.txt");
+						Scanner instruc = new Scanner(file);
+						while (instruc.hasNextLine()) {
+						    String line = instruc.nextLine();
+						    System.out.println(line);
+						}
+						instruc.close();
+					}
+					catch (Exception ex){
+						ex.printStackTrace();
+					}
+				}
+			    if (userInput.equals("r")) {
+			    	nextPiece.rotate();
+			    	printBoard();	
+			    }
+			    else if (userInput.length() != 3 || ! userInput.substring(1, 2).equals(" "))
+				System.out.println("\nPlease enter a valid row and column coordinate pair separated by a space");
+			    else {
+				String rowCoor = userInput.substring(0, 1);
+				String colCoor = userInput.substring(2, 3);
+				try {
+				    int r = Integer.parseInt(rowCoor);
+				    int c = Integer.parseInt(colCoor);
+				    boolean putIn = _board.placePiece(nextPiece, r, c);
+				    printBoard();
+				    //System.out.println("ARRAY OPTIONS:" + _valOptions);
+				    //System.out.println("MAXVAL: " + _maxTileVal);
+				    if (putIn) {
+					nextPiece = getNextPiece();
+					mergeAllPossible(r, c);
+				    }
+				    else {
+					System.out.println("\nPiece cannot fit there. Try again");
+					System.out.println();
+					}
+				}
+				catch(NumberFormatException e){
+				    System.out.println("\nPlease enter a valid row and column coordinate pair separated by a space, or enter 'r' to rotate the piece");
+				}
+			    }
+			    System.out.println();
+			    if (_board.isFilled()) {
+				System.out.println("Game over!");
+				printScore();
+				break;
+			    }
+
+			    printPiece(nextPiece);
+			    //System.out.println(_maxTileVal);
+			    //System.out.println("NUM OPEN SPOTS: " + _board.numOpenSpots());
+			    System.out.println("Enter coordinates to place tile");
+			    if (! nextPiece.isSingleTile()) System.out.println("or type 'r' to turn the piece");
+			    
+			}
 		}
-	    }
-	    System.out.println();
-	    if (_board.isFilled()) {
-		System.out.println("Game over!");
-		printScore();
-	        if (ScoreTest.saveHighScore(_score, userInput.substring(8,11))
-		    == true)
-		    System.out.println("High score added to list!");
-		else System.out.println("Score not in the top 10.");		
-		break;
-	    }
-
-	    printPiece(nextPiece);
-	    //System.out.println(_maxTileVal);
-	    //System.out.println("NUM OPEN SPOTS: " + _board.numOpenSpots());
-	    System.out.println("Enter coordinates to place tile");
-	    if (! nextPiece.isSingleTile()) System.out.println("or type 'r' to turn the piece");
-	    
-	}
     }    
-
+	*/
     public static void main(String [] args){
       
 	 Game test = new Game();
