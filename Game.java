@@ -2,6 +2,7 @@ import java.util.ArrayList;
 import java.util.Queue;
 import java.util.LinkedList;
 import java.util.Scanner;
+import java.io.File;
 
 
 public class Game {
@@ -12,12 +13,14 @@ public class Game {
     private ArrayList<Integer> _valOptions;
     
     public Game(){
-	_board = new GameBoard();    
-        _score = 0;
-	_maxTileVal = 2;
-	_valOptions = new ArrayList<Integer>();
-	_valOptions.add(1);
-	_valOptions.add(2);
+		_board = new GameBoard();    
+	        _score = 0;
+		_maxTileVal = 2;
+		_valOptions = new ArrayList<Integer>();
+		_valOptions.add(1);
+		//_valOptions.add(2);
+		//_valOptions.add(6);
+		_valOptions.add(7);
     }
 
     
@@ -169,7 +172,9 @@ public class Game {
      //pre: tile at _board[r][c] is a 7;
     public void explode(int r, int c){
 		//explodes in a supposed 3 * 3 
+		/*
 		boolean left, right, up, down;
+		int addon = surroundedBy(r,c);
 		left = right = up = down = false;
 		if (c + 1 < _board.boardLength()) right = true;
 		if (! ((c - 1) < 0)) left = true;
@@ -179,33 +184,75 @@ public class Game {
 		if (left){
 			(_board.getBoard())[r][c-1] = null;
 			if (up){
-				(_board.getBoard())[r-1][c-1] = null;
-				(_board.getBoard())[r-1][c] = null;
+				(_board.getBoard())[r-1][c-1] = null; 
+				(_board.getBoard())[r-1][c] = null; //S
 			}
 			if (down) {
 				(_board.getBoard())[r+1][c-1] = null;
-				(_board.getBoard())[r+1][c] = null;
+				(_board.getBoard())[r+1][c] = null; //S
+				
 			}
 		}
 
 		if (right){
 			(_board.getBoard())[r][c+1] = null;
+			
 			if (up) {
 				(_board.getBoard())[r-1][c+1] = null;
 				(_board.getBoard())[r-1][c] = null;
+				
 			}
 			if (down) {
 				(_board.getBoard())[r+1][c+1] = null;
 				(_board.getBoard())[r+1][c] = null;
-			}
+			}	
 		}
 		(_board.getBoard())[r][c] = null;
+		*/
+		ArrayList<CoordinatePair> location = surroundedBy(r,c);
+		//System.out.println("LOCATIONS: " + location);
+		for (int i = 0; i < location.size(); i++){
+			_board.clearTileAt(location.get(i).getRow(), location.get(i).getCol());
+		}
+		_board.clearTileAt(r, c);
+		_board.setNumOpenSpots(1 + location.size() + _board.numOpenSpots());
+    }
+
+    public ArrayList<CoordinatePair> surroundedBy(int r, int c){
+    	ArrayList<CoordinatePair> total = new ArrayList<CoordinatePair>();
+    	Tile zero = new Tile(0, null);
+    	//left
+		if (rcValid(r, c-1))
+			if (_board.getTileAt(r,c-1) != null) total.add(new CoordinatePair(r, c-1));
+		if (rcValid(r, c+1))
+			if (_board.getTileAt(r,c+1) != null) total.add(new CoordinatePair(r, c+1));
+		if (rcValid(r+1, c+1))
+			if (_board.getTileAt(r+1,c+1) != null) total.add(new CoordinatePair(r+1, c+1));
+		if (rcValid(r+1, c))
+			if (_board.getTileAt(r+1,c) != null) total.add(new CoordinatePair(r+1, c));
+		if (rcValid(r+1, c-1))
+			if (_board.getTileAt(r+1,c-1) != null) total.add(new CoordinatePair(r+1, c-1));
+		if (rcValid(r-1, c))
+			if (_board.getTileAt(r-1,c) != null) total.add(new CoordinatePair(r-1, c));
+		if (rcValid(r-1, c+1))
+			if (_board.getTileAt(r-1,c+1) != null) total.add(new CoordinatePair(r-1, c+1));
+		if (rcValid(r-1, c-1))
+			if (_board.getTileAt(r-1,c-1) != null) total.add(new CoordinatePair(r-1, c-1));
+		
+    	return total;
+    }
+
+    public boolean rcValid(int r, int c){
+    	if (r < 0 || c < 0 || r >= _board.boardLength() || c >= _board.boardLength())
+    		return false;
+    	return true;
     }
 
     public void play(){
 	Scanner sc = new Scanner(System.in);
 	System.out.println("Welcome to Merged!");
 	System.out.println("For a brief introduction to this game, visit www.merged.it and watch the 30s trailer.");
+	System.out.println("For instructions on how to play this game, type help");
 	System.out.println();
 	System.out.println("Starting new game...");
 	System.out.println();
@@ -217,6 +264,20 @@ public class Game {
 	if (! nextPiece.isSingleTile()) System.out.println("or type 'r' to rotate the piece");
 	while (sc.hasNextLine()){
 	    String userInput = sc.nextLine();
+	    if (userInput.equals("help")){
+            try {
+            	File file = new File("help.txt");
+	            Scanner instruc = new Scanner(file);
+	            while (instruc.hasNextLine()) {
+	                String line = instruc.nextLine();
+	                System.out.println(line);
+	            }
+	            instruc.close();
+	        }
+	        catch (Exception ex){
+	        	 ex.printStackTrace();
+	        }
+	    }
 	    if (userInput.equals("r")) {
 	    	nextPiece.rotate();
 	    	printBoard();	
@@ -255,6 +316,7 @@ public class Game {
 
 	    printPiece(nextPiece);
 	    //System.out.println(_maxTileVal);
+	    //System.out.println("NUM OPEN SPOTS: " + _board.numOpenSpots());
 	    System.out.println("Enter coordinates to place tile");
 	    if (! nextPiece.isSingleTile()) System.out.println("or type 'r' to turn the piece");
 	    
