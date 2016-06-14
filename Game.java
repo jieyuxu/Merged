@@ -226,6 +226,16 @@ public class Game {
 	}
     }
 
+    public static void printScoreBoard(){
+	System.out.println(HighScore.read());
+    }
+
+    public void tryToSaveScoreOnScoreBoard(String initials) {
+	if (ScoreTest.saveHighScore(_score, initials))
+	    System.out.println("High score added to list!");
+	else System.out.println("Score not in the top 10.");
+    }
+
     public void play(){
 	Scanner sc = new Scanner(System.in);
 	System.out.println("Starting new game...");
@@ -248,16 +258,18 @@ public class Game {
 		nextPiece.rotate();
 		printBoard();	
 	    }
-	    else if (userInput.equals("highscores"))
-		System.out.println(HighScore.read());
-	    else if (userInput.length() >= 8 &&
-		     userInput.substring(0,8).equals("savequit")){
-		if (ScoreTest.saveHighScore(_score, userInput.substring(8,11))
-		    == true)
-		    System.out.println("High score added to list!");
-		else System.out.println("Score not in the top 10.");
+	    else if (userInput.equals("quit")){
+		System.out.println("Please enter up to 3 initials to save score as");
+		Scanner getInitials = new Scanner(System.in);
+		String initials = getInitials.nextLine();
+		tryToSaveScoreOnScoreBoard(initials.substring(0, 3));
+		getInitials.close();
+		break;
 	    }
-				    
+	    //	    else if (userInput.length() >= 8 &&
+	    //	     userInput.substring(0,8).equals("savequit")){
+	    //		tryToSaveScoreToScoreBoard(userInput.substring(8,11));
+	    // }
 				
 	    else if (userInput.length() != 3 || ! userInput.substring(1, 2).equals(" "))
 		System.out.println("\nPlease enter a valid row and column coordinate pair separated by a space");
@@ -288,16 +300,10 @@ public class Game {
 	    if (_board.isFilled()) {
 		System.out.println("Game over!");
 		printScore();
-		if (ScoreTest.saveHighScore(_score, userInput.substring(8,11))
-		    == true)
-		    System.out.println("High score added to list!");
-		else System.out.println("Score not in the top 10.");		
+		tryToSaveScoreOnScoreBoard(userInput.substring(8, 11));
 		break;
 	    }
-
 	    printPiece(nextPiece);
-	    //System.out.println(_maxTileVal);
-	    //System.out.println("NUM OPEN SPOTS: " + _board.numOpenSpots());
 	    System.out.println("Enter coordinates to place tile");
 	    if (! nextPiece.isSingleTile()) System.out.println("or type 'r' to turn the piece");
 			    
