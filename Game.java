@@ -332,6 +332,9 @@ public class Game {
 		test.play();
 		break;
 	    }
+	    else {
+	    	System.out.println("Please enter 'help' or 'start'");
+	    }
 	}
 	
     }
